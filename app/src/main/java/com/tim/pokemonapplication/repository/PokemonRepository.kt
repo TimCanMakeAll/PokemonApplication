@@ -4,7 +4,7 @@ import com.tim.pokemonapplication.data.remote.responses.Pokemon
 import com.tim.pokemonapplication.data.remote.responses.PokemonList
 import com.tim.pokemonapplication.util.Resource
 
-class PokemonRepository constructor(
+class PokemonRepository (
     private val Api: PokemonApi
 ) {
 
