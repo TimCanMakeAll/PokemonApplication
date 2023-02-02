@@ -1,6 +1,5 @@
 package com.tim.pokemonapplication.data.remote
 
-import android.media.audiofx.DynamicsProcessing.Limiter
 import com.tim.pokemonapplication.data.remote.responses.Pokemon
 import com.tim.pokemonapplication.data.remote.responses.PokemonList
 import retrofit2.http.GET
@@ -11,9 +10,9 @@ interface PokemonApi {
 
     @GET("pokemon")
     suspend fun getPokemonList(
-        @Query("limit") limit: Int,
-        @Query("offset") offset: Int,
-    ): PokemonList
+        @Query("limit") limit1: Int,
+        @Query("offset") offset1: Int,
+    ) : PokemonList
 
     @GET("pokemon/{name}")
     suspend fun getPokemonInfo(
