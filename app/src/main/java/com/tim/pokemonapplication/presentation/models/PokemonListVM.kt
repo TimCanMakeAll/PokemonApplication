@@ -13,7 +13,7 @@ import java.util.*
 
 class PokemonListVM : ViewModel() {
 
-    private var curPage = 0;
+    var curPage = 0;
 
     var pokemonList = MutableLiveData<List<PokemonListDataClass>>(listOf())
     var loadError = mutableStateOf("")
@@ -35,9 +35,7 @@ class PokemonListVM : ViewModel() {
             )
 
             when (result) {
-
                 is Resource.Success -> {
-
                     endReached.value = curPage * PAGE_SIZE >= result.data!!.count
 
                     val pokemonEntry = result.data.results.mapIndexed { index, entry ->
@@ -53,7 +51,7 @@ class PokemonListVM : ViewModel() {
 
                     loadError.value = ""
                     isLoading.value = false
-                    pokemonList.value = pokemonEntry
+                    pokemonList.value = pokemonList.value?.plus(pokemonEntry)
 
                 }
                 is Resource.Error -> {
