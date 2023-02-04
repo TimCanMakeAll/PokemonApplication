@@ -1,11 +1,14 @@
 package com.tim.pokemonapplication.presentation.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.runtime.MutableState
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,6 +22,8 @@ class PokemonListFragment : Fragment() {
     var namesList = mutableListOf<String>()
     var imagesLinksList = mutableListOf<String>()
     var numberList = mutableListOf<Int>()
+
+    private val viewModel: PokemonListVM by activityViewModels()
 
     lateinit var adapter: RecyclerViewAdapter
 
@@ -35,11 +40,9 @@ class PokemonListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel: PokemonListVM by activityViewModels()
-        viewModel.curPage = 1
+
         viewModel.pokemonList.observe(viewLifecycleOwner) {
             postToList(it)
-            viewModel.pagination()
         }
 
         val recyclerView: RecyclerView = view.findViewById(R.id.fr_PList_recyclerView)
@@ -47,23 +50,38 @@ class PokemonListFragment : Fragment() {
         adapter = RecyclerViewAdapter(namesList, imagesLinksList, numberList)
         recyclerView.adapter = adapter
 
-        //recyclerViewDetector(recyclerView)
+        scrollListener(
+            recyclerView,
+            recyclerView.layoutManager as LinearLayoutManager,
+            adapter,
+        )
     }
 
-    /*private fun recyclerViewDetector(recyclerView: RecyclerView){
+    private fun scrollListener(
+        recyclerView: RecyclerView,
+        layoutManager: LinearLayoutManager,
+        adapter: RecyclerViewAdapter,
+    ) {
 
-        scrollListener = object : RecyclerView.OnScrollListener() {
-            override fun onScrollStateChanged(recyclerView: RecyclerView?, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                val totalItemCount = recyclerView!!.layoutManager.itemCount
-                if (totalItemCount == lastVisibleItemPosition + 1) {
-                    Log.d("MyTAG", "Load new list")
-                    recycler.removeOnScrollListener(scrollListener)
+        recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+
+                val loading = viewModel.isLoading
+
+                val visibleItemCount: Int = layoutManager.childCount
+                val pastVisibleItem: Int = layoutManager.findFirstCompletelyVisibleItemPosition()
+                val totalItemNumber: Int = adapter.itemCount
+
+                if (!loading.value){
+
+                    if (visibleItemCount + pastVisibleItem >= totalItemNumber){
+                        viewModel.pagination()
+                    }
                 }
+                super.onScrolled(recyclerView, dx, dy)
             }
-        }
-        recycler.addOnScrollListener(scrollListener)
-    }*/
+        })
+    }
 
     private fun addToList(name: String, imageLink: String, number: Int) {
 
@@ -77,9 +95,9 @@ class PokemonListFragment : Fragment() {
         var imageLink: String
         var number: Int
 
-        if (pokemonListDataClasses.size < 20){
+        if (pokemonListDataClasses.size < 20) {
 
-            for (i in 0 ..pokemonListDataClasses.size - 1) {
+            for (i in 0..pokemonListDataClasses.size - 1) {
                 imageLink = pokemonListDataClasses[i].imageLink
                 number = pokemonListDataClasses[i].id
 
@@ -88,7 +106,7 @@ class PokemonListFragment : Fragment() {
             }
         } else {
 
-            for (i in pokemonListDataClasses.size - 20 ..pokemonListDataClasses.size - 1) {
+            for (i in pokemonListDataClasses.size - 20..pokemonListDataClasses.size - 1) {
                 imageLink = pokemonListDataClasses[i].imageLink
                 number = pokemonListDataClasses[i].id
 
