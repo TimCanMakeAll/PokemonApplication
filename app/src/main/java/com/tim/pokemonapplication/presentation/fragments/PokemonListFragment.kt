@@ -40,7 +40,6 @@ open class PokemonListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         viewModel.pokemonList.observe(viewLifecycleOwner) {
             postToList(it)
         }
@@ -85,6 +84,8 @@ open class PokemonListFragment : Fragment() {
 
     private fun addToList(name: String, imageLink: String, number: Int) {
 
+        if (namesList.contains(name)){ return }
+
         namesList.add(name)
         imagesLinksList.add(imageLink)
         numberList.add(number)
@@ -119,6 +120,10 @@ open class PokemonListFragment : Fragment() {
     fun switchToDetailFragment(view: View) {
 
         Navigation.findNavController(view).navigate(R.id.pokemonDetailFragment)
+    }
+
+    fun changeCurrentPageNumber(){
+        viewModel.curPage++
     }
 }
 

@@ -25,8 +25,7 @@ class PokemonDetailFragment : Fragment() {
         exitButton = view.findViewById(R.id.exit_button)
 
         exitButton.setOnClickListener {
-
-            Navigation.findNavController(view).navigate(R.id.pokemonListFragment)
+            Navigation.findNavController(view).navigateUp()
         }
         return view
     }
