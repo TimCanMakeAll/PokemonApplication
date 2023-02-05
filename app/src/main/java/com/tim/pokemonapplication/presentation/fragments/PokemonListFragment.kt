@@ -17,7 +17,7 @@ import com.tim.pokemonapplication.presentation.adapters.RecyclerViewAdapter
 import com.tim.pokemonapplication.presentation.models.PokemonListDataClass
 import com.tim.pokemonapplication.presentation.models.PokemonListVM
 
-class PokemonListFragment : Fragment() {
+open class PokemonListFragment : Fragment() {
 
     var namesList = mutableListOf<String>()
     var imagesLinksList = mutableListOf<String>()
@@ -121,3 +121,5 @@ class PokemonListFragment : Fragment() {
         Navigation.findNavController(view).navigate(R.id.pokemonDetailFragment)
     }
 }
+
+object PokemonListFragmentObject : PokemonListFragment()

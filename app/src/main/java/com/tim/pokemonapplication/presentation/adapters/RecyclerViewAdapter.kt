@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.tim.pokemonapplication.R
 import com.tim.pokemonapplication.presentation.fragments.PokemonListFragment
+import com.tim.pokemonapplication.presentation.fragments.PokemonListFragmentObject
 
 
 class RecyclerViewAdapter(private var names: List<String>, private var imagesLinks: List<String>, private var numbers: List<Int>)
@@ -22,7 +23,7 @@ class RecyclerViewAdapter(private var names: List<String>, private var imagesLin
 
         init {
             itemView.setOnClickListener {
-                PokemonListFragment().switchToDetailFragment(itemView)
+                PokemonListFragmentObject.switchToDetailFragment(itemView)
             }
         }
     }
