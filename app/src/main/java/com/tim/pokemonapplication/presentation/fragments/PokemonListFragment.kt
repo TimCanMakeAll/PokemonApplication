@@ -5,10 +5,8 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.runtime.MutableState
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.ViewModel
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -117,13 +115,16 @@ open class PokemonListFragment : Fragment() {
         }
     }
 
-    fun switchToDetailFragment(view: View) {
+    fun switchToDetailFragment(view: View, pokemonName: String, pokemonImageUrl: String) {
 
-        Navigation.findNavController(view).navigate(R.id.pokemonDetailFragment)
-    }
+        val pokemonDetailObject = PokemonDetailFragment()
 
-    fun changeCurrentPageNumber(){
-        viewModel.curPage++
+        val bundle = Bundle()
+        bundle.putString("name", pokemonName)
+        bundle.putString("imageUrl", pokemonImageUrl)
+        pokemonDetailObject.arguments = bundle
+
+        fragmentManager?.beginTransaction()?.replace(R.id.MActivity_fragmentHolder, pokemonDetailObject)?.commit()
     }
 }
 

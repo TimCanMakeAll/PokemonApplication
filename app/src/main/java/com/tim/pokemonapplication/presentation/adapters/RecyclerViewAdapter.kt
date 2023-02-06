@@ -23,7 +23,7 @@ class RecyclerViewAdapter(private var names: List<String>, private var imagesLin
 
         init {
             itemView.setOnClickListener {
-                PokemonListFragmentObject.switchToDetailFragment(itemView)
+                PokemonListFragmentObject.switchToDetailFragment(itemView, names[position], imagesLinks[position])
             }
         }
     }

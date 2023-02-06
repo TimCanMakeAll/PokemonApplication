@@ -13,7 +13,7 @@ import java.util.*
 
 class PokemonListVM : ViewModel() {
 
-    var curPage = 0;
+    var curPage = 0
 
     var pokemonList = MutableLiveData<List<PokemonListDataClass>>(listOf())
     var loadError = mutableStateOf("")
@@ -58,6 +58,7 @@ class PokemonListVM : ViewModel() {
                     loadError.value = result.message!!
                     isLoading.value = false
                 }
+                is Resource.Loading ->{ return@launch }
             }
         }
     }
